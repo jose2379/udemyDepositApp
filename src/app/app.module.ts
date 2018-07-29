@@ -3,7 +3,12 @@ import { NgModule } from '@angular/core';
 
 // Módulos
 import { AppRoutingModule } from './app-routing.module';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { FormsModule } from '@angular/forms';
+
+// NGRX
+import { StoreModule } from '@ngrx/store';
+import { appReducers } from './app.reducers';
 
 // Firebase
 import { AngularFireModule } from 'angularfire2';
@@ -43,7 +48,12 @@ import { SidebarComponent } from './shared/sidebar/sidebar.component';
     FormsModule,
     AngularFireModule.initializeApp( environment.firebase ),
     AngularFirestoreModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    StoreModule.forRoot( appReducers ),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
