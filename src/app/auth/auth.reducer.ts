@@ -16,12 +16,13 @@ export function authReducer( state = stateInit, action: fromAuth.actions) {
         case fromAuth.SET_USER:
         return {
             user: { ... action.payload }
-        }
+        };
 
         case fromAuth.UNSET_USER:
+        console.log('reducer');
         return {
             user: null
-        }
+        };
 
         default:
         return state;

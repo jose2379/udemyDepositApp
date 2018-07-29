@@ -11,7 +11,7 @@ import { User } from './user.model';
 import { Store } from '@ngrx/store';
 import { AppState } from '../app.reducers';
 import { ActiveLoadingAction, DisableLoadingAction } from '../shared/ui.actions';
-import { SetUserAction } from './auth.actions';
+import { SetUserAction, UnsetUserAction } from './auth.actions';
 import { Subscription } from '../../../node_modules/rxjs';
 import { UnsetItemsActions } from '../deposit/deposit.actions';
 
@@ -42,6 +42,7 @@ export class AuthService {
         } else {
           this.user = null;
           this.subcriptions.unsubscribe();
+          this.store.dispatch( new UnsetUserAction() );
         }
       }
     );
@@ -59,8 +60,6 @@ export class AuthService {
         name: name,
         email: res.user.email
       };
-
-      console.log('user antes del envio', user);
 
       this.afDB.doc(`${ user.uid }/user`)
       .set( user )
@@ -93,11 +92,10 @@ export class AuthService {
   }
 
   logout = () => {
-    this.router.navigate(['/login']);
     this.afAuth.auth.signOut();
-    this.store.dispatch( new UnsetItemsActions() );
+    this.router.navigate(['/login']);
   }
-
+  
   isAuth() {
     return this.afAuth.authState.pipe(map( fbUser =>{
       if ( fbUser == null ) {
