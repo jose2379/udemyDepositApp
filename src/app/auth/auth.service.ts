@@ -13,6 +13,7 @@ import { AppState } from '../app.reducers';
 import { ActiveLoadingAction, DisableLoadingAction } from '../shared/ui.actions';
 import { SetUserAction } from './auth.actions';
 import { Subscription } from '../../../node_modules/rxjs';
+import { UnsetItemsActions } from '../deposit/deposit.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,7 @@ export class AuthService {
   activateAction;
   deactivateAction;
   private subcriptions: Subscription = new Subscription();
+  private user: User;
 
   constructor(  private afAuth: AngularFireAuth, private router: Router, private afDB: AngularFirestore,
                 private store: Store<AppState> ) { }
@@ -34,9 +36,11 @@ export class AuthService {
             (userObj: any) => {
               const newUser = new User( userObj );
               this.store.dispatch( new SetUserAction ( newUser ) );
+              this.user = newUser;
             }
           )
         } else {
+          this.user = null;
           this.subcriptions.unsubscribe();
         }
       }
@@ -91,6 +95,7 @@ export class AuthService {
   logout = () => {
     this.router.navigate(['/login']);
     this.afAuth.auth.signOut();
+    this.store.dispatch( new UnsetItemsActions() );
   }
 
   isAuth() {
@@ -100,5 +105,9 @@ export class AuthService {
       }
       return fbUser !== null;
     }));
+  }
+
+  getUser = () => {
+    return { ...this.user };
   }
 }
