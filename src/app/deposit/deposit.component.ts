@@ -3,10 +3,11 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Deposit } from './deposit.model';
 import { DepositService } from './deposit.service';
 import { Store } from '@ngrx/store';
-import { AppState } from '../app.reducers';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2'
 import { ActiveLoadingAction, DisableLoadingAction } from '../shared/ui.actions';
+
+import * as fromDeposit from '../deposit/deposit.reducer';
 
 @Component({
   selector: 'app-deposit',
@@ -22,7 +23,7 @@ export class DepositComponent implements OnInit, OnDestroy {
   loading: boolean;
 
   constructor(  public depositService: DepositService,
-                private store: Store<AppState>  ) { }
+                private store: Store<fromDeposit.AppState>  ) { }
 
   ngOnInit() {
 

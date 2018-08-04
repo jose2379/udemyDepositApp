@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '../../../../node_modules/@ngrx/store';
-import { AppState } from '../../app.reducers';
 import { Deposit } from '../deposit.model';
 import { Subscription } from '../../../../node_modules/rxjs';
 import { DepositService } from '../deposit.service';
 import Swal from 'sweetalert2';
+
+import * as fromDeposit from '../deposit.reducer';
 
 @Component({
   selector: 'app-detail',
@@ -16,7 +17,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   items: Deposit[];
   itemsSubscriptions: Subscription = new Subscription();
 
-  constructor(  private store: Store<AppState>,
+  constructor(  private store: Store<fromDeposit.AppState>,
                 private depositService: DepositService) { }
 
   ngOnInit() {

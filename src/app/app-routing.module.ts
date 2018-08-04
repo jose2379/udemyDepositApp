@@ -11,9 +11,8 @@ const routes: Routes = [
     { path: 'register', component: RegisterComponent },
     {
         path: '',
-        component: DashboardComponent,
-        children: dashboardRoutes,
-        canActivate: [ AuthGuardService ]
+        loadChildren: './deposit/deposit.module#DepositModule',
+        canLoad: [ AuthGuardService ]
     },
     { path: '**', redirectTo: '' }
 ]
